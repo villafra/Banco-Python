@@ -4,7 +4,23 @@ def crearcuenta():
     return random.randint(5000,9999)
 
 def Depositar(cuenta, monto):
+    monto += listacuentasmontos[cuenta]
     listacuentasmontos.update({cuenta:monto})
+
+def Extraer(cuenta, monto):
+    si_no = False
+    nuevomonto = listacuentasmontos[cuenta] - monto
+    if not monto > listacuentasmontos[cuenta]:
+        listacuentasmontos.update({cuenta:nuevomonto})
+        si_no = True
+    return si_no
+
+def Transferir(origen, destino, monto):
+    si_no = False
+    if Extraer(origen, monto):
+        Depositar(destino, monto)
+        si_no = True
+    return si_no
 
 listadecuentas={}
 listacuentasmontos={}
@@ -34,6 +50,7 @@ while opcion < 8:
         cuenta = crearcuenta()
         print(textocuenta.format(nombre, str(cuenta)))
         listadecuentas[nombre] = cuenta
+        listacuentasmontos[cuenta] = 0
         opcion = 0
     
     if opcion == 2:
@@ -87,7 +104,47 @@ while opcion < 8:
         for x,y in listacuentasmontos.items():
             print(x,y)
         opcion = 0
-        if opcion == 8:
+    if opcion == 6:
+        print("Seleccionar cuenta para extraccion:")
+        if listadecuentas:
+             for x, y in listadecuentas.items():
+                print(x,y)
+             print("")
+             cuenta = int(input())
+             print("Ingrese el monto deseado a extraer:")
+             ingreso = float(input())
+             if Extraer(cuenta, ingreso):
+                print("Se ha extraido con exito")
+             else:
+                print("No ha podido completarse la extraccion")   
+        else:
+            print("La Lista de clientes esta vacia\n")
+        for x,y in listacuentasmontos.items():
+            print(x,y)
+        opcion = 0
+    if opcion == 7:
+         print("Seleccionar cuenta origen:")
+         if listadecuentas:
+             for x, y in listadecuentas.items():
+                print(x,y)
+             print("")
+             origen = int(input())
+             for x, y in listadecuentas.items():
+                print(x,y)
+             print("Seleccione la cuenta destino:")
+             destino = int(input())
+             print("Ingrese el monto deseado a transferir:")
+             transferencia = float(input())
+             if Transferir(origen, destino, transferencia):
+                 print("Se ha transferido con exito")
+             else:
+                 print("No ha podido completarse la extraccion")
+         else:
+            print("La Lista de clientes esta vacia\n")
+         for x,y in listacuentasmontos.items():
+            print(x,y)
+         opcion = 0
+    if opcion == 8:
             quit()
     print ("Por favor elija un item del menu:\n\
 1-Crear Usuario\n\
