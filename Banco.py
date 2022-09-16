@@ -1,7 +1,21 @@
 import random
 
+def Listar():
+    print("Nombre\t\t\tCuenta\t  Saldo")
+    for x, y in listadecuentas.items():
+        print(x,"\t",y,"\t",listacuentasmontos[y])
+    print("")
+
 def crearcuenta():
     return random.randint(5000,9999)
+
+def modifusuario(nombre, nuevonombre):
+    cuenta = listadecuentas.get(nombre)
+    listadecuentas.pop(nombre)
+    listadecuentas[nuevonombre] = cuenta
+
+def eliminarusuario(nombre):
+    listadecuentas.pop(nombre)
 
 def Depositar(cuenta, monto):
     monto += listacuentasmontos[cuenta]
@@ -55,42 +69,44 @@ while opcion < 8:
     
     if opcion == 2:
         print("Seleccione el usuario a modificar:")
-        for x in listadecuentas:
-            print(x)
-        nombre = input()
-        cuenta = listadecuentas.get(nombre)
-        texto = "Va a modificar a {}"
-        print(texto.format(nombre))
-        print("Ingrese Nombre:")
-        nuevonombre = input()
-        print("Ingrese Apellido:")
-        nuevonombre+= " " + input()
-        listadecuentas.pop(nombre)
-        listadecuentas[nuevonombre] = cuenta
-        for x in listadecuentas:
-            print(x)
-        opcion = 0
-    if opcion == 3:
-        print("Seleccione el usuario a eliminar:")
-        for x in listadecuentas:
-            print(x)
-        nombre = input()
-        listadecuentas.pop(nombre)
-        texto = "Se ha eliminado a {}\n"
-        print(texto.format(nombre))
-        opcion = 0
-    if opcion == 4:
         if listadecuentas:
             for x in listadecuentas:
                 print(x)
+            nombre = input()
+            texto = "Va a modificar a {}"
+            print(texto.format(nombre))
+            print("Ingrese Nombre:")
+            nuevonombre = input()
+            print("Ingrese Apellido:")
+            nuevonombre+= " " + input()
+            modifusuario(nuevonombre)
+            for x in listadecuentas:
+                print(x)
+        else:
+            print("La Lista de clientes esta vacia\n")
+        opcion = 0
+    if opcion == 3:
+        if listadecuentas:
+            print("Seleccione el usuario a eliminar:")
+            for x in listadecuentas:
+                print(x)
+            nombre = input()
+            eliminarusuario(nombre)
+            texto = "Se ha eliminado a {}\n"
+            print(texto.format(nombre))
+        else:
+            print("La Lista de clientes esta vacia\n")
+        opcion = 0
+    if opcion == 4:
+        if listadecuentas:
+            Listar()
         else:
            print("La Lista de clientes esta vacia\n")
         opcion = 0
     if opcion == 5:
         print("Seleccionar cuenta a depositar:")
         if listadecuentas:
-            for x, y in listadecuentas.items():
-                print(x,y)
+            Listar()
             print("")
             cuenta = int(input())
             print("Ingrese el monto a depositar:")
@@ -101,14 +117,12 @@ while opcion < 8:
                 print("No se ha depositado")   
         else:
             print("La Lista de clientes esta vacia\n")
-        for x,y in listacuentasmontos.items():
-            print(x,y)
+        Listar()
         opcion = 0
     if opcion == 6:
         print("Seleccionar cuenta para extraccion:")
         if listadecuentas:
-             for x, y in listadecuentas.items():
-                print(x,y)
+             Listar()
              print("")
              cuenta = int(input())
              print("Ingrese el monto deseado a extraer:")
@@ -116,21 +130,18 @@ while opcion < 8:
              if Extraer(cuenta, ingreso):
                 print("Se ha extraido con exito")
              else:
-                print("No ha podido completarse la extraccion")   
+                print("El monto que desea extraer supera el saldo de la cuenta")   
         else:
             print("La Lista de clientes esta vacia\n")
-        for x,y in listacuentasmontos.items():
-            print(x,y)
+        Listar()
         opcion = 0
     if opcion == 7:
          print("Seleccionar cuenta origen:")
          if listadecuentas:
-             for x, y in listadecuentas.items():
-                print(x,y)
+             Listar()
              print("")
              origen = int(input())
-             for x, y in listadecuentas.items():
-                print(x,y)
+             Listar()
              print("Seleccione la cuenta destino:")
              destino = int(input())
              print("Ingrese el monto deseado a transferir:")
@@ -138,11 +149,10 @@ while opcion < 8:
              if Transferir(origen, destino, transferencia):
                  print("Se ha transferido con exito")
              else:
-                 print("No ha podido completarse la extraccion")
+                 print("El monto que desea transferir supera el saldo de la cuenta de origen")
          else:
             print("La Lista de clientes esta vacia\n")
-         for x,y in listacuentasmontos.items():
-            print(x,y)
+         Listar()
          opcion = 0
     if opcion == 8:
             quit()
